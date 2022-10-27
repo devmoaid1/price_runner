@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,9 +19,11 @@ class MyApp extends StatelessWidget {
             navigatorKey: Get.key,
             title: 'Price Runner',
             debugShowCheckedModeBanner: false,
-            builder: DevicePreview.appBuilder,
             theme: ThemeData(
               fontFamily: "Montserrat",
+              progressIndicatorTheme: const ProgressIndicatorThemeData(
+                color: Color(0xff54328E),
+              ),
               primaryColor: const Color(0xff54328E),
               scaffoldBackgroundColor: Colors.white,
               primarySwatch: Colors.blue,
