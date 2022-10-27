@@ -3,6 +3,7 @@ import 'package:price_runner/core/api/api_consumer.dart';
 import 'package:price_runner/core/constants/app_constats.dart';
 
 import 'package:html/parser.dart' as parser;
+import 'package:price_runner/core/errors/exceptions.dart';
 
 abstract class ProductRemoteDatasource {
   Future<Document> getDubaiHtmlDocument();
@@ -16,27 +17,40 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDatasource {
   ProductRemoteDataSourceImpl({required this.apiConsumer});
   @override
   Future<Document> getAmazonHtmlDocument() async {
-    var response = await apiConsumer.getData(path: AppConstants.amazonPath);
+    try {
+      var response = await apiConsumer.getData(path: AppConstants.amazonPath);
 
-    final html = parser.parse(response);
+      final html = parser.parse(response);
 
-    return html;
+      return html;
+    } catch (err) {
+      throw ServerException(err.toString());
+    }
   }
 
   @override
   Future<Document> getDubaiHtmlDocument() async {
-    var response = await apiConsumer.getData(path: AppConstants.dubaiPhone);
+    try {
+      var response = await apiConsumer.getData(path: AppConstants.dubaiPath);
 
-    final html = parser.parse(response);
+      final html = parser.parse(response);
 
-    return html;
+      return html;
+    } catch (err) {
+      throw ServerException(err.toString());
+    }
   }
 
   @override
   Future<Document> getJumiaHtmlDocument() async {
-    var response = await apiConsumer.getData(path: AppConstants.jumiaPath);
-    final html = parser.parse(response);
+    try {
+      var response = await apiConsumer.getData(path: AppConstants.jumiaPath);
 
-    return html;
+      final html = parser.parse(response);
+
+      return html;
+    } catch (err) {
+      throw ServerException(err.toString());
+    }
   }
 }

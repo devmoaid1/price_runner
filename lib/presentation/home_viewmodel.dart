@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:price_runner/data/models/price_model.dart';
 import 'package:price_runner/domain/repositories/product_repository.dart';
 
+import '../core/utils/show_custom_snackbar.dart';
 import '../data/models/product.dart';
 
 class HomeViewModel extends GetxController {
@@ -39,9 +41,21 @@ class HomeViewModel extends GetxController {
     final dubaiProduct = await productRepository.getDubaiStoreProduct();
     final jumiaProduct = await productRepository.getJumiaProduct();
 
-    products.add(dubaiProduct);
-    products.add(amazonProduct);
-    products.add(jumiaProduct);
+    // if sucess add to list if failure skip adding to list
+    amazonProduct.fold(
+        (failure) =>
+            showCustomSnackBar(color: Colors.red, message: failure.message),
+        (product) => products.add(product));
+
+    dubaiProduct.fold(
+        (failure) =>
+            showCustomSnackBar(color: Colors.red, message: failure.message),
+        (product) => products.add(product));
+
+    jumiaProduct.fold(
+        (failure) =>
+            showCustomSnackBar(color: Colors.red, message: failure.message),
+        (product) => products.add(product));
 
     return products;
   }
@@ -49,7 +63,9 @@ class HomeViewModel extends GetxController {
   Future<void> getProductDetails() async {
     final products = await _getProductFromAllStores();
 
-    _product = products.where((element) => element.name.isNotEmpty).toList()[0];
+    _product = products
+        .where((element) => element.name.isNotEmpty)
+        .toList()[0]; //get product that contains prodct name
 
     _prices = List.generate(
         products.length,
