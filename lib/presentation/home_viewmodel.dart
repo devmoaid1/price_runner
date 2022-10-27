@@ -43,8 +43,10 @@ class HomeViewModel extends GetxController {
 
     // if sucess add to list if failure skip adding to list
     amazonProduct.fold(
-        (failure) =>
-            showCustomSnackBar(color: Colors.red, message: failure.message),
+        (failure) => showCustomSnackBar(
+              color: Colors.red,
+              message: failure.message,
+            ),
         (product) => products.add(product));
 
     dubaiProduct.fold(
@@ -63,24 +65,28 @@ class HomeViewModel extends GetxController {
   Future<void> getProductDetails() async {
     final products = await _getProductFromAllStores();
 
-    _product = products
-        .where((element) => element.name.isNotEmpty)
-        .toList()[0]; //get product that contains prodct name
+    if (products.isNotEmpty) {
+      _product = products
+          .where((element) => element.name.isNotEmpty)
+          .toList()[0]; //get product that contains prodct name
 
-    _prices = List.generate(
-        products.length,
-        ((index) => PriceModel(
-            storeImagePath: '',
-            storeName: products[index].storeName,
-            productPrice: double.parse(products[index].price).toInt(),
-            isAvailable: products[index].isAvailable)));
+      _prices = List.generate(
+          products.length,
+          ((index) => PriceModel(
+              storeImagePath: '',
+              storeName: products[index].storeName,
+              productPrice: double.parse(products[index].price).toInt(),
+              isAvailable: products[index].isAvailable)));
 
-    _prices.sort(((a, b) => a.productPrice
-        .compareTo(b.productPrice))); // sort lest decending by product price
-    _currentPrices = List.from(_prices);
-    _currentPrices
-        .removeLast(); // current prices contains all prices without the most expensive
-    _isLoading = false;
+      _prices.sort(((a, b) => a.productPrice
+          .compareTo(b.productPrice))); // sort lest decending by product price
+      _currentPrices = List.from(_prices);
+      _currentPrices
+          .removeLast(); // current prices contains all prices without the most expensive
+
+      _isLoading = false;
+    }
+
     update();
   }
 

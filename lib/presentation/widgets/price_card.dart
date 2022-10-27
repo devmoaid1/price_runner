@@ -97,18 +97,11 @@ class PriceCard extends StatelessWidget {
                     ),
                     Image.asset(
                       homeViewModel.isShowAll
-                          ? Assets.arrowUp
-                          : Assets.arrowDown,
+                          ? Assets.arrowDown
+                          : Assets.arrowUp,
                       width: 24.w,
                       height: 24.h,
                     ),
-
-                    // Icon(
-                    //   homeViewModel.isShowAll
-                    //       ? Icons.arrow_downward
-                    //       : Icons.arrow_drop_down,
-                    //   color: Theme.of(context).primaryColor,
-                    // )
                   ],
                 ),
               )
