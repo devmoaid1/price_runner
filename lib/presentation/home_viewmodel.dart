@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:price_runner/data/models/price_model.dart';
 import 'package:price_runner/domain/repositories/product_repository.dart';
 
 import '../data/models/product.dart';
@@ -8,35 +9,49 @@ class HomeViewModel extends GetxController {
 
   Product? _product;
 
+  bool _isLoading = true;
+
+  bool get isLoading => _isLoading;
+
+  List<PriceModel> _prices = [];
+
+  List<PriceModel> get prices => _prices;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getProductDetails();
+  }
+
   HomeViewModel({required this.productRepository});
   Product? get product => _product;
 
-  Future<void> getProduct() async {}
+  Future<List<Product>> _getProductFromAllStores() async {
+    List<Product> products = [];
+    final amazonProduct = await productRepository.getAmazonProduct();
+    final dubaiProduct = await productRepository.getDubaiStoreProduct();
+    final jumiaProduct = await productRepository.getJumiaProduct();
 
-  Future<void> getData() async {
-    final p1 = await productRepository.getAmazonProduct();
-    // final p2 = await productRepository.getDubaiStoreProduct();
-    // final p3 = await productRepository.getJumiaProduct();
+    products.add(dubaiProduct);
+    products.add(amazonProduct);
+    products.add(jumiaProduct);
 
-    print("Amazon: price: ${p1.price} =>  isAvailable:${p1.isAvailable}");
-    // print("Dubai: ${p3.isAvailable}");
-    // print("Jumia: $p3");
+    return products;
+  }
 
-    // try {
-    //   var response = await http.get(Uri.parse(AppConstants.dubaiPhone));
+  Future<void> getProductDetails() async {
+    final products = await _getProductFromAllStores();
 
-    //   if (response.statusCode == 200) {
-    //     dom.Document html = dom.Document.html(response.body);
-    //     final String productTitle =
-    //         html.querySelector('#product_details > h1')!.innerHtml;
-    //     var imagePath = html
-    //         .querySelector(
-    //             '#o-carousel-product > div.d-none.d-md-block.text-center > ol > li.d-inline-block.m-1.align-top.active > div > img')!
-    //         .attributes['src'];
-    //     print(imagePath);
-    //   }
-    // } catch (err) {
-    //   print(err.toString());
-    // }
+    _product = products.where((element) => element.name.isNotEmpty).toList()[0];
+
+    _prices = List.generate(
+        products.length,
+        ((index) => PriceModel(
+            storeImagePath: '',
+            storeName: products[index].storeName,
+            productPrice: double.parse(products[index].price).toInt(),
+            isAvailable: products[index].isAvailable)));
+    _isLoading = false;
+    update();
   }
 }

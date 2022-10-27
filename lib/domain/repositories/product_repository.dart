@@ -20,13 +20,13 @@ class ProductRepositoryImpl implements ProductRepository {
             "#corePriceDisplay_desktop_feature_div > div.a-section.a-spacing-none.aok-align-center > span.a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay > span.a-offscreen")!
         .innerHtml
         .split("</span>")[1]
-        .split(".")[0];
+        .replaceFirst(RegExp(r','), "")
+        .substring(1, 8)
+        .trim();
 
     final String stock = html.querySelector("#availability > span")!.innerHtml;
 
-    final isAvailable =
-        stock.startsWith("Only"); // only means there is a stock left
-
+    final isAvailable = stock.contains(RegExp(r'[1-10000]'));
     final amazonProduct = Product(
         imagePath: "",
         name: "",
@@ -50,17 +50,12 @@ class ProductRepositoryImpl implements ProductRepository {
     final String productPrice = html
         .querySelector(
             "#product_details > form > div > div.product_price.mt16 > h4.oe_price_h4.css_editable_mode_hidden > b > span")!
-        .innerHtml;
-    final String stock = html
-        .querySelector(
-            "#product_details > form > div > div.availability_messages.o_not_editable")!
-        .firstChild!
-        .children[0]
-        .id;
+        .innerHtml
+        .replaceFirst(RegExp(r','), "");
+    final String stock = html.querySelector('#add_to_cart')!.text.trim();
 
-    print("Dubai: $stock");
-
-    final isAvailable = stock.endsWith("stock"); //means there is a stock left
+    final isAvailable = stock
+        .contains("Add to Cart"); // Add to cart means there is a stock left
 
     final dubaiProduct = Product(
         imagePath: imagePath.toString(),
@@ -77,11 +72,17 @@ class ProductRepositoryImpl implements ProductRepository {
     final html = await productRemoteDatasource.getJumiaHtmlDocument();
 
     final String productPrice = html
-        .querySelector(
-            "#jm > main > div:nth-child(2) > div.col4 > div > article > div > div > div > span")!
-        .innerHtml
-        .split(" ")[1];
-    final String stock = html.querySelector("5 units left")!.outerHtml;
+        .getElementsByClassName("-hr -mtxs -pvs")[0]
+        .children[0]
+        .text
+        .split(" ")[1]
+        .replaceFirst(RegExp(r','), "")
+        .split('E')[0];
+
+    print(productPrice);
+
+    final String stock =
+        html.getElementsByClassName('-df -i-ctr -fs12 -pbs -rd5')[0].text;
 
     final isAvailable = stock.endsWith("left"); //means there is a stock left
 

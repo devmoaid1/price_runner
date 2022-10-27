@@ -7,5 +7,5 @@ class AppConstants {
   static const dubaiPhone =
       "https://www.dubaiphone.net/en/shop/apple-airpods-pro-2-3606#attr=10545,10609,10608,10546,10610";
 
-  static const imagePathPrefix = "https://www.dubaiphone.net/";
+  static const imagePathPrefix = "https://www.dubaiphone.net";
 }

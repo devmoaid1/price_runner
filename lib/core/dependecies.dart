@@ -13,5 +13,5 @@ void setupLocator() {
   Get.lazyPut<ProductRepository>(
       () => ProductRepositoryImpl(productRemoteDatasource: Get.find()));
 
-  Get.lazyPut(() => HomeViewModel(productRepository: Get.find()), fenix: true);
+  Get.lazyPut(() => HomeViewModel(productRepository: Get.find()));
 }
