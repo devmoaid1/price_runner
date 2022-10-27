@@ -11,11 +11,18 @@ class HomeViewModel extends GetxController {
 
   bool _isLoading = true;
 
+  bool _isShowAll = true;
+
+  bool get isShowAll => _isShowAll;
+
   bool get isLoading => _isLoading;
 
   List<PriceModel> _prices = [];
 
+  List<PriceModel> _currentPrices = [];
+
   List<PriceModel> get prices => _prices;
+  List<PriceModel> get currentPrices => _currentPrices;
 
   @override
   void onInit() {
@@ -51,7 +58,25 @@ class HomeViewModel extends GetxController {
             storeName: products[index].storeName,
             productPrice: double.parse(products[index].price).toInt(),
             isAvailable: products[index].isAvailable)));
+
+    _prices.sort(((a, b) => a.productPrice
+        .compareTo(b.productPrice))); // sort lest decending by product price
+    _currentPrices = List.from(_prices);
+    _currentPrices
+        .removeLast(); // current prices contains all prices without the most expensive
     _isLoading = false;
+    update();
+  }
+
+  void setShowAll() {
+    _isShowAll = false;
+    _currentPrices = List.from(_prices);
+    update();
+  }
+
+  void setShowLess() {
+    _isShowAll = true;
+    _currentPrices.removeLast();
     update();
   }
 }

@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             title: 'Price Runner',
+            debugShowCheckedModeBanner: false,
             builder: DevicePreview.appBuilder,
             theme: ThemeData(
               fontFamily: "Montserrat",

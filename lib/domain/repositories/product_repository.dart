@@ -79,8 +79,6 @@ class ProductRepositoryImpl implements ProductRepository {
         .replaceFirst(RegExp(r','), "")
         .split('E')[0];
 
-    print(productPrice);
-
     final String stock =
         html.getElementsByClassName('-df -i-ctr -fs12 -pbs -rd5')[0].text;
 
