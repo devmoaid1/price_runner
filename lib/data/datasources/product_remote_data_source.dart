@@ -20,7 +20,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDatasource {
     try {
       var response = await apiConsumer.getData(path: AppConstants.amazonPath);
 
-      final html = parser.parse(response);
+      final html =
+          parser.parse(response); // parse the the response to html documtent
 
       return html;
     } catch (err) {
@@ -33,7 +34,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDatasource {
     try {
       var response = await apiConsumer.getData(path: AppConstants.dubaiPath);
 
-      final html = parser.parse(response);
+      final html =
+          parser.parse(response); // parse the the response to html documtent
 
       return html;
     } catch (err) {
@@ -46,7 +48,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDatasource {
     try {
       var response = await apiConsumer.getData(path: AppConstants.jumiaPath);
 
-      final html = parser.parse(response);
+      final html =
+          parser.parse(response); // parse the the response to html documtent
 
       return html;
     } catch (err) {

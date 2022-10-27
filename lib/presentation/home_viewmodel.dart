@@ -79,7 +79,7 @@ class HomeViewModel extends GetxController {
               isAvailable: products[index].isAvailable)));
 
       _prices.sort(((a, b) => a.productPrice
-          .compareTo(b.productPrice))); // sort lest decending by product price
+          .compareTo(b.productPrice))); // sort Prices on decending order
       _currentPrices = List.from(_prices);
       _currentPrices
           .removeLast(); // current prices contains all prices without the most expensive
@@ -92,13 +92,13 @@ class HomeViewModel extends GetxController {
 
   void setShowAll() {
     _isShowAll = false;
-    _currentPrices = List.from(_prices);
+    _currentPrices = List.from(_prices); // show all prices available
     update();
   }
 
   void setShowLess() {
     _isShowAll = true;
-    _currentPrices.removeLast();
+    _currentPrices.removeLast(); // hide the most expensive store
     update();
   }
 }
