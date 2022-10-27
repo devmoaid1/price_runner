@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 
 import '../../core/constants/app_constats.dart';
 import '../../core/constants/assets.dart';
-import '../../core/constants/colors.dart';
-import '../home_view.dart';
 import '../home_viewmodel.dart';
+import 'kewword_card.dart';
+import 'price_card.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -25,6 +25,7 @@ class HomeBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // logo
               Center(
                 child: Image.asset(
                   Assets.logoPng,
@@ -32,9 +33,12 @@ class HomeBody extends StatelessWidget {
                   height: 16.h,
                 ),
               ),
+
               SizedBox(
                 height: 5.h,
               ),
+
+              // product cover
               Center(
                 child: Image.network(
                   "${AppConstants.imagePathPrefix}${controller.product!.imagePath}",
@@ -58,6 +62,7 @@ class HomeBody extends StatelessWidget {
               SizedBox(
                 height: 40.h,
                 child: ListView.builder(
+                  key: UniqueKey(),
                   itemCount: controller.product!.name.split(" ").length,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
@@ -65,23 +70,7 @@ class HomeBody extends StatelessWidget {
                     final String keyWord =
                         controller.product!.name.split(" ")[index];
 
-                    return Container(
-                      margin: EdgeInsets.only(right: 8.w),
-                      decoration: BoxDecoration(
-                          color: AppColors.kewWordBackGroundColor,
-                          borderRadius: BorderRadius.circular(8)),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 8.w),
-                      child: Center(
-                        child: Text(
-                          keyWord,
-                          style: TextStyle(
-                              fontSize: 15.sp,
-                              color: AppColors.keyWordTextColor,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    );
+                    return KewWordCard(keyWord: keyWord);
                   },
                 ),
               ),
